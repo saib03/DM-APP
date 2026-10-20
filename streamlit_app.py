@@ -166,7 +166,7 @@ def draw_graph(graph, slot_of):
 st.title("Exam Clash-Free Scheduler")
 
 st.write(
-    "Courses are **vertices**. Two courses are joined by an **edge** "
+    "Courses are vertices. Two courses are connected by an edge "
     "if a student takes both. Graph coloring assigns different exam "
     "slots to courses that clash."
 )
@@ -189,13 +189,6 @@ with st.sidebar:
         min_value=1,
         max_value=4,
         value=2
-    )
-
-    capacity = st.number_input(
-        "Hall capacity per slot (0 = ignore)",
-        min_value=0,
-        max_value=10000,
-        value=0
     )
 
 
@@ -297,20 +290,6 @@ with tab1:
         "timetable.csv",
         mime="text/csv"
     )
-
-    if capacity:
-        for slot in range(slots_used):
-            total = sum(
-                size[course]
-                for course in graph
-                if slot_of[course] == slot
-            )
-
-            if total > capacity:
-                st.warning(
-                    f"Slot {slot + 1} has {total} students, "
-                    f"over the capacity of {capacity}."
-                )
 
 
 with tab2:
