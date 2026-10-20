@@ -19,11 +19,20 @@ DEMO = {
 
 
 # ---------- 1. read data: {student: set of courses} ----------
+
 def read_enrolments(text):
     students = {}
-    for row in csv.DictReader(io.StringIO(text)):
-        students.setdefault(row["student"].strip(), set()).add(row["course"].strip())
+    reader = csv.DictReader(io.StringIO(text))
+
+    reader.fieldnames = [name.strip().lower() for name in reader.fieldnames]
+
+    for row in reader:
+        student = row["student"].strip()
+        course = row["course"].strip()
+        students.setdefault(student, set()).add(course)
+
     return students
+
 
 
 # ---------- 2. build graph: {course: set of clashing courses} ----------
